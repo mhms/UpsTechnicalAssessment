@@ -1,6 +1,6 @@
 ﻿namespace UPS.HomeWork.Presenetation
 {
-    partial class Form1
+    partial class UserDataGridForm
     {
         /// <summary>
         /// Required designer variable.
@@ -41,6 +41,9 @@
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.btnLastPage = new System.Windows.Forms.Button();
+            this.btnFirstPage = new System.Windows.Forms.Button();
+            this.btnAddUser = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.UsersDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -93,6 +96,9 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnAddUser);
+            this.splitContainer1.Panel2.Controls.Add(this.btnFirstPage);
+            this.splitContainer1.Panel2.Controls.Add(this.btnLastPage);
             this.splitContainer1.Panel2.Controls.Add(this.noTotalRecords);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.lblTotalPage);
@@ -150,21 +156,21 @@
             // 
             // btnPreviousPage
             // 
-            this.btnPreviousPage.Location = new System.Drawing.Point(237, 17);
+            this.btnPreviousPage.Location = new System.Drawing.Point(244, 17);
             this.btnPreviousPage.Name = "btnPreviousPage";
-            this.btnPreviousPage.Size = new System.Drawing.Size(75, 23);
+            this.btnPreviousPage.Size = new System.Drawing.Size(46, 23);
             this.btnPreviousPage.TabIndex = 1;
-            this.btnPreviousPage.Text = "<<";
+            this.btnPreviousPage.Text = "<";
             this.btnPreviousPage.UseVisualStyleBackColor = true;
             this.btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
             // 
             // btnNextPage
             // 
-            this.btnNextPage.Location = new System.Drawing.Point(469, 17);
+            this.btnNextPage.Location = new System.Drawing.Point(440, 17);
             this.btnNextPage.Name = "btnNextPage";
-            this.btnNextPage.Size = new System.Drawing.Size(47, 23);
+            this.btnNextPage.Size = new System.Drawing.Size(38, 23);
             this.btnNextPage.TabIndex = 0;
-            this.btnNextPage.Text = ">>";
+            this.btnNextPage.Text = ">";
             this.btnNextPage.UseVisualStyleBackColor = true;
             this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
             // 
@@ -186,13 +192,42 @@
             this.splitContainer2.SplitterDistance = 30;
             this.splitContainer2.TabIndex = 3;
             // 
-            // Form1
+            // btnLastPage
+            // 
+            this.btnLastPage.Location = new System.Drawing.Point(489, 17);
+            this.btnLastPage.Name = "btnLastPage";
+            this.btnLastPage.Size = new System.Drawing.Size(38, 23);
+            this.btnLastPage.TabIndex = 7;
+            this.btnLastPage.Text = ">>";
+            this.btnLastPage.UseVisualStyleBackColor = true;
+            this.btnLastPage.Click += new System.EventHandler(this.btnLastPage_Click);
+            // 
+            // btnFirstPage
+            // 
+            this.btnFirstPage.Location = new System.Drawing.Point(196, 17);
+            this.btnFirstPage.Name = "btnFirstPage";
+            this.btnFirstPage.Size = new System.Drawing.Size(42, 23);
+            this.btnFirstPage.TabIndex = 8;
+            this.btnFirstPage.Text = "<<";
+            this.btnFirstPage.UseVisualStyleBackColor = true;
+            this.btnFirstPage.Click += new System.EventHandler(this.btnFirstPage_Click);
+            // 
+            // btnAddUser
+            // 
+            this.btnAddUser.Location = new System.Drawing.Point(576, 16);
+            this.btnAddUser.Name = "btnAddUser";
+            this.btnAddUser.Size = new System.Drawing.Size(42, 23);
+            this.btnAddUser.TabIndex = 9;
+            this.btnAddUser.UseVisualStyleBackColor = true;
+            this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
+            // 
+            // UserDataGridForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.splitContainer2);
-            this.Name = "Form1";
+            this.Name = "UserDataGridForm";
             this.Text = "UPS Users Form";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.UsersDataGridView)).EndInit();
@@ -225,6 +260,9 @@
         private System.Windows.Forms.Button btnPreviousPage;
         private System.Windows.Forms.Button btnNextPage;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Button btnFirstPage;
+        private System.Windows.Forms.Button btnLastPage;
+        private System.Windows.Forms.Button btnAddUser;
     }
 }
 

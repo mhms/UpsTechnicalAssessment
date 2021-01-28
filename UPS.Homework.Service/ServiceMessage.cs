@@ -53,6 +53,8 @@ namespace UPS.Homework.Service
         InputDataValidationError = 8,
 
         [Description("Unauthorized access")] AccessDenied = 9,
+        [Description("The email address is Already taken")] EmailAddressTaken = 10,
+        [Description("The user successfully added")] UserAddition = 11,
     }
     public enum MessageType
     {

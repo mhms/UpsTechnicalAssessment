@@ -26,6 +26,8 @@ namespace UPS.Homework.Service
         private string _apiAddress;
         private string _token;
         private string _startPath;
+        private DataTable _datatable;
+        
         public UserService(string startupPath)
         {
             _apiAddress = WebConfigurationManager.AppSettings["api_address"];
@@ -57,29 +59,34 @@ namespace UPS.Homework.Service
 
             
         }
+        
         public async Task<ServiceResult<Tuple<DataTable,DataSet, Pagination>>> LoadPage(int page)
         {
             
-            var dataSet = new DataSet();
-            var dataTable = new DataTable();
+            
+            
             var pagination = new Pagination();
             var imageEdit = Image.FromFile(Path.Combine(_startPath, "edit24.png"));
             var imageDelete = Image.FromFile(Path.Combine(_startPath, "delete24.png"));
-            dataTable = dataSet.Tables.Add("TableTest");
-            dataTable.Columns.Add(nameof(UserDto.id), typeof(string));
-            dataTable.Columns.Add(nameof(UserDto.name), typeof(string));
-            dataTable.Columns.Add(nameof(UserDto.email), typeof(string));
-            dataTable.Columns.Add(nameof(UserDto.gender), typeof(string));
-            dataTable.Columns.Add(nameof(UserDto.status), typeof(string));
-            dataTable.Columns.Add(nameof(UserDto.created_at), typeof(DateTime));
-            dataTable.Columns.Add(nameof(UserDto.updated_at), typeof(DateTime));
-            dataTable.Columns.Add("edit", typeof(Bitmap));
-            dataTable.Columns.Add("delete", typeof(Bitmap));
+            var _dataSet = new DataSet();
             try
             {
                 var result = await GetUsers("", page);
                 if (result.code == 200)
                 {
+                    
+                    _datatable = new DataTable();
+                    _datatable = _dataSet.Tables.Add("TableTest");
+                    _datatable.Columns.Add(nameof(UserDto.id), typeof(string));
+                    _datatable.Columns.Add(nameof(UserDto.name), typeof(string));
+                    _datatable.Columns.Add(nameof(UserDto.email), typeof(string));
+                    _datatable.Columns.Add(nameof(UserDto.gender), typeof(string));
+                    _datatable.Columns.Add(nameof(UserDto.status), typeof(string));
+                    _datatable.Columns.Add(nameof(UserDto.created_at), typeof(DateTime));
+                    _datatable.Columns.Add(nameof(UserDto.updated_at), typeof(DateTime));
+                    _datatable.Columns.Add("edit", typeof(Bitmap));
+                    _datatable.Columns.Add("delete", typeof(Bitmap));
+                    
                     pagination = result.meta.pagination;
                     foreach (var record in result.data)
                     {
@@ -95,7 +102,7 @@ namespace UPS.Homework.Service
                         imageEdit,
                         imageDelete
                         };
-                        dataTable.Rows.Add(arrObj);
+                        _datatable.Rows.Add(arrObj);
                     }
                 }
                 
@@ -106,18 +113,39 @@ namespace UPS.Homework.Service
                 _exception = ex;
             }
 
-            return new ServiceResult<Tuple<DataTable,DataSet,Pagination>>(true, Tuple.Create(dataTable,dataSet,pagination), _messages,_exception);
+            return new ServiceResult<Tuple<DataTable,DataSet,Pagination>>(true, Tuple.Create(_datatable,_dataSet,pagination), _messages,_exception);
         }
 
         
 
-        public async Task<int> AddUser(UserDto userDto)
+        public async Task<ServiceResult> AddUser(UserDto userDto)
         {
             try
             {
                 var url = Url.Combine(_apiAddress, "/users");
-                var postJsonAsync = await url.WithOAuthBearerToken(_token).PostJsonAsync(userDto);
-                return postJsonAsync.StatusCode;
+                var result = await url.WithOAuthBearerToken(_token).PostJsonAsync(userDto).ReceiveJson<ResponseDTO<Object>>();
+                
+                if (result.code == 201)
+                {
+                    _messages.Add(new ServiceMessage(MessageType.Succeed, MessageId.UserAddition));
+                    return new ServiceResult(true, _messages);
+                }
+                else if (result.code == 401)
+                {
+                    _messages.Add(new ServiceMessage(MessageType.Error, MessageId.AccessDenied));
+                    return new ServiceResult(false, _messages);
+                }
+                else if (result.code == 404)
+                {
+                    _messages.Add(new ServiceMessage(MessageType.Error, MessageId.EntityDoesNotExist));
+                    return new ServiceResult(false, _messages);
+                }
+                else if ( result.code == 422)
+                {
+                    _messages.Add(new ServiceMessage(MessageType.Error, MessageId.EmailAddressTaken));
+                }
+                _messages.Add(new ServiceMessage(MessageType.Error, MessageId.None));
+                return new ServiceResult(false,_messages);
             }
             catch (FlurlHttpException fex)
             {
@@ -137,7 +165,7 @@ namespace UPS.Homework.Service
             {
                 var url = Url.Combine(_apiAddress, "/users", userDto.id.ToString());
                 var result = await url.WithOAuthBearerToken(_token).PutJsonAsync(userDto).ReceiveJson<ResponseDTO<Object>>();
-                if (result.code == 204)
+                if (result.code == 200)
                 {
                     return new ServiceResult(true, _messages);
                 }
@@ -199,7 +227,7 @@ namespace UPS.Homework.Service
                 var error = exception.Message;
                 _exception = exception;
             }
-            return new ServiceResult<object>(true, null, messages,_exception);
+            return new ServiceResult(true, _messages,_exception);
         }
 
 

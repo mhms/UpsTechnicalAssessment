@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Test", "4-Test", "{9E13CD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UPS.Homework.ServiceTests1", "UPS.Homework.ServiceTests1\UPS.Homework.ServiceTests1.csproj", "{B7FA02A0-FEB5-40BF-8830-B4FC1CAE90D1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-CrossCutting", "5-CrossCutting", "{BAEC8A32-C7D5-48D9-88A0-EEFF3A46CAAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UPS.Homework.CrossCutting", "UPS.Homework.CrossCutting\UPS.Homework.CrossCutting.csproj", "{E30ACF85-09BA-488F-B134-A1E984517903}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,10 @@ Global
 		{B7FA02A0-FEB5-40BF-8830-B4FC1CAE90D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7FA02A0-FEB5-40BF-8830-B4FC1CAE90D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7FA02A0-FEB5-40BF-8830-B4FC1CAE90D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E30ACF85-09BA-488F-B134-A1E984517903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E30ACF85-09BA-488F-B134-A1E984517903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E30ACF85-09BA-488F-B134-A1E984517903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E30ACF85-09BA-488F-B134-A1E984517903}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +58,7 @@ Global
 		{CAB3D892-A477-4B22-A6DF-C60182B43566} = {E1785127-C647-490F-847B-5DA67A096768}
 		{77D02BFA-D7A0-442E-AA14-6C2EF4EF6F0E} = {69BC3D7E-3A8F-49E5-8049-5D9E59628C51}
 		{B7FA02A0-FEB5-40BF-8830-B4FC1CAE90D1} = {9E13CD52-C0D5-41C0-A62E-D31530B5679E}
+		{E30ACF85-09BA-488F-B134-A1E984517903} = {BAEC8A32-C7D5-48D9-88A0-EEFF3A46CAAC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ABCC22BE-0E56-4E4E-A817-DACD6503E5B6}

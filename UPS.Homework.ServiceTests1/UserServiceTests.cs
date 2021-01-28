@@ -26,11 +26,6 @@ namespace UPS.Homework.Service.Tests
 
         }
 
-        [Test]
-        public async Task UpdateUser()
-        {
-            var updateServiceResult = _userService.UpdateUser()
-        }
         public UserServiceTests()
         {
             _userService = new UserService("");

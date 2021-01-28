@@ -49,16 +49,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="AddUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AddUserForm.Designer.cs">
+      <DependentUpon>AddUserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserDataGridForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserDataGridForm.Designer.cs">
+      <DependentUpon>UserDataGridForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="AddUserForm.resx">
+      <DependentUpon>AddUserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserDataGridForm.resx">
+      <DependentUpon>UserDataGridForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -84,6 +93,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UPS.Homework.CrossCutting\UPS.Homework.CrossCutting.csproj">
+      <Project>{e30acf85-09ba-488f-b134-a1e984517903}</Project>
+      <Name>UPS.Homework.CrossCutting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UPS.Homework.DTO\UPS.Homework.DTO.csproj">
       <Project>{77d02bfa-d7a0-442e-aa14-6c2ef4ef6f0e}</Project>
       <Name>UPS.Homework.DTO</Name>
@@ -94,6 +107,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="add24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="delete24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
