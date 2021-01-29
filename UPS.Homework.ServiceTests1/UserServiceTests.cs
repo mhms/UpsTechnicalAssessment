@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
+using UPS.Homework.CrossCutting;
 using UPS.Homework.DTO;
 
 namespace UPS.Homework.Service.Tests
@@ -73,7 +75,26 @@ namespace UPS.Homework.Service.Tests
 
             };
             var result = await _userService.UpdateUser(user);
-            Assert.Fail();
+            Assert.AreEqual(result.Succeeded,true);
+            
+        }
+
+        [Test]
+        public async Task AddUserDuplicateEmailMockTest()
+        {
+            var userServiceMock = new Mock<IUserService>();
+            var messages = new List<ServiceMessage>();
+            messages.Add(new ServiceMessage(MessageType.Error, MessageId.EmailAddressTaken));
+            userServiceMock.Setup(p =>  p.AddUser(new UserDto())).Returns(Task.FromResult(new ServiceResult(false, messages)));
+            Assert.True(userServiceMock.Object == null);
+            var result = await  userServiceMock.Object.AddUser(new UserDto());
+
+            var message = result.Messages[0];
+            var messageDescription = message.Message.GetEnumDescription();
+            var messageTitle = message.Type.GetEnumDescription();
+
+
+
         }
     }
 }

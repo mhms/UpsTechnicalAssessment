@@ -36,6 +36,7 @@ namespace UPS.HomeWork.Presenetation
             _userService = new UserService(Application.StartupPath);
             UsersDataGridView.SetDoubleBuffered();
             UsersDataGridView.DataSource = bindingSource1;
+            UsersDataGridView.FilterAndSortEnabled = false;
             btnAddUser.Image = Image.FromFile(Path.Combine(Application.StartupPath,"add24.png"));
             btnAddUser.Width = 25;
             btnAddUser.Height = 25;
@@ -107,6 +108,9 @@ namespace UPS.HomeWork.Presenetation
             UsersDataGridView.Columns[StatusColName].DisplayIndex = UsersDataGridView.Columns[nameof(UserDto.status)].DisplayIndex;
             UsersDataGridView.Columns[GenderColName].HeaderText = "Gender";
             UsersDataGridView.Columns[StatusColName].HeaderText = "Status";
+            UsersDataGridView.Columns[nameof(UserDto.created_at)].ReadOnly = true;
+            UsersDataGridView.Columns[nameof(UserDto.updated_at)].ReadOnly = true;
+
 
         }
 
