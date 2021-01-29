@@ -31,8 +31,11 @@
             this.components = new System.ComponentModel.Container();
             this.UsersDataGridView = new Zuby.ADGV.AdvancedDataGridView();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.advancedDataGridViewSearchToolBar1 = new Zuby.ADGV.AdvancedDataGridViewSearchToolBar();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnExport = new System.Windows.Forms.Button();
+            this.btnAddUser = new System.Windows.Forms.Button();
+            this.btnFirstPage = new System.Windows.Forms.Button();
+            this.btnLastPage = new System.Windows.Forms.Button();
             this.noTotalRecords = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblTotalPage = new System.Windows.Forms.Label();
@@ -41,9 +44,10 @@
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.btnLastPage = new System.Windows.Forms.Button();
-            this.btnFirstPage = new System.Windows.Forms.Button();
-            this.btnAddUser = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.btnSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.UsersDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -69,20 +73,6 @@
             this.UsersDataGridView.TabIndex = 0;
             this.UsersDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellClick);
             // 
-            // advancedDataGridViewSearchToolBar1
-            // 
-            this.advancedDataGridViewSearchToolBar1.AllowMerge = false;
-            this.advancedDataGridViewSearchToolBar1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.advancedDataGridViewSearchToolBar1.Location = new System.Drawing.Point(0, 0);
-            this.advancedDataGridViewSearchToolBar1.MaximumSize = new System.Drawing.Size(0, 27);
-            this.advancedDataGridViewSearchToolBar1.MinimumSize = new System.Drawing.Size(0, 27);
-            this.advancedDataGridViewSearchToolBar1.Name = "advancedDataGridViewSearchToolBar1";
-            this.advancedDataGridViewSearchToolBar1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.advancedDataGridViewSearchToolBar1.Size = new System.Drawing.Size(800, 27);
-            this.advancedDataGridViewSearchToolBar1.TabIndex = 1;
-            this.advancedDataGridViewSearchToolBar1.Text = "advancedDataGridViewSearchToolBar1";
-            this.advancedDataGridViewSearchToolBar1.Search += new Zuby.ADGV.AdvancedDataGridViewSearchToolBarSearchEventHandler(this.advancedDataGridViewSearchToolBar1_Search);
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -96,6 +86,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnExport);
             this.splitContainer1.Panel2.Controls.Add(this.btnAddUser);
             this.splitContainer1.Panel2.Controls.Add(this.btnFirstPage);
             this.splitContainer1.Panel2.Controls.Add(this.btnLastPage);
@@ -109,6 +100,45 @@
             this.splitContainer1.Size = new System.Drawing.Size(800, 416);
             this.splitContainer1.SplitterDistance = 364;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(665, 16);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 23);
+            this.btnExport.TabIndex = 10;
+            this.btnExport.Text = "Export";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // btnAddUser
+            // 
+            this.btnAddUser.Location = new System.Drawing.Point(576, 16);
+            this.btnAddUser.Name = "btnAddUser";
+            this.btnAddUser.Size = new System.Drawing.Size(42, 23);
+            this.btnAddUser.TabIndex = 9;
+            this.btnAddUser.UseVisualStyleBackColor = true;
+            this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
+            // 
+            // btnFirstPage
+            // 
+            this.btnFirstPage.Location = new System.Drawing.Point(196, 17);
+            this.btnFirstPage.Name = "btnFirstPage";
+            this.btnFirstPage.Size = new System.Drawing.Size(42, 23);
+            this.btnFirstPage.TabIndex = 8;
+            this.btnFirstPage.Text = "<<";
+            this.btnFirstPage.UseVisualStyleBackColor = true;
+            this.btnFirstPage.Click += new System.EventHandler(this.btnFirstPage_Click);
+            // 
+            // btnLastPage
+            // 
+            this.btnLastPage.Location = new System.Drawing.Point(489, 17);
+            this.btnLastPage.Name = "btnLastPage";
+            this.btnLastPage.Size = new System.Drawing.Size(38, 23);
+            this.btnLastPage.TabIndex = 7;
+            this.btnLastPage.Text = ">>";
+            this.btnLastPage.UseVisualStyleBackColor = true;
+            this.btnLastPage.Click += new System.EventHandler(this.btnLastPage_Click);
             // 
             // noTotalRecords
             // 
@@ -183,7 +213,9 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.advancedDataGridViewSearchToolBar1);
+            this.splitContainer2.Panel1.Controls.Add(this.btnSearch);
+            this.splitContainer2.Panel1.Controls.Add(this.lblSearch);
+            this.splitContainer2.Panel1.Controls.Add(this.txtSearch);
             // 
             // splitContainer2.Panel2
             // 
@@ -192,34 +224,31 @@
             this.splitContainer2.SplitterDistance = 30;
             this.splitContainer2.TabIndex = 3;
             // 
-            // btnLastPage
+            // txtSearch
             // 
-            this.btnLastPage.Location = new System.Drawing.Point(489, 17);
-            this.btnLastPage.Name = "btnLastPage";
-            this.btnLastPage.Size = new System.Drawing.Size(38, 23);
-            this.btnLastPage.TabIndex = 7;
-            this.btnLastPage.Text = ">>";
-            this.btnLastPage.UseVisualStyleBackColor = true;
-            this.btnLastPage.Click += new System.EventHandler(this.btnLastPage_Click);
+            this.txtSearch.Location = new System.Drawing.Point(100, 4);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(169, 20);
+            this.txtSearch.TabIndex = 0;
             // 
-            // btnFirstPage
+            // lblSearch
             // 
-            this.btnFirstPage.Location = new System.Drawing.Point(196, 17);
-            this.btnFirstPage.Name = "btnFirstPage";
-            this.btnFirstPage.Size = new System.Drawing.Size(42, 23);
-            this.btnFirstPage.TabIndex = 8;
-            this.btnFirstPage.Text = "<<";
-            this.btnFirstPage.UseVisualStyleBackColor = true;
-            this.btnFirstPage.Click += new System.EventHandler(this.btnFirstPage_Click);
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Location = new System.Drawing.Point(21, 7);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(73, 13);
+            this.lblSearch.TabIndex = 1;
+            this.lblSearch.Text = "Search name:";
             // 
-            // btnAddUser
+            // btnSearch
             // 
-            this.btnAddUser.Location = new System.Drawing.Point(576, 16);
-            this.btnAddUser.Name = "btnAddUser";
-            this.btnAddUser.Size = new System.Drawing.Size(42, 23);
-            this.btnAddUser.TabIndex = 9;
-            this.btnAddUser.UseVisualStyleBackColor = true;
-            this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
+            this.btnSearch.Location = new System.Drawing.Point(284, 3);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 2;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // UserDataGridForm
             // 
@@ -250,7 +279,6 @@
 
         private Zuby.ADGV.AdvancedDataGridView UsersDataGridView;
         private System.Windows.Forms.BindingSource bindingSource1;
-        private Zuby.ADGV.AdvancedDataGridViewSearchToolBar advancedDataGridViewSearchToolBar1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label noTotalRecords;
         private System.Windows.Forms.Label label2;
@@ -263,6 +291,11 @@
         private System.Windows.Forms.Button btnFirstPage;
         private System.Windows.Forms.Button btnLastPage;
         private System.Windows.Forms.Button btnAddUser;
+        private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.TextBox txtSearch;
     }
 }
 

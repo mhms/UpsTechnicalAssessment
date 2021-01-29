@@ -35,7 +35,7 @@ namespace UPS.Homework.Service
             _startPath = startupPath;
 
         }
-        public async Task<ResponseDTO<List<UserDto>>> GetUsers(string name="", int page = 0)
+        public async Task<ServiceResult<ResponseDTO<List<UserDto>>>> GetUsers(string name="", int page = 0)
         {
             try
             {
@@ -45,22 +45,24 @@ namespace UPS.Homework.Service
                 if (!string.IsNullOrWhiteSpace(name))
                     url = url.SetQueryParam("name", name);
                 var result = await url.GetJsonAsync<ResponseDTO<List<UserDto>>>();
-                return result;
+                return new ServiceResult<ResponseDTO<List<UserDto>>>( true, result,_messages);
             }
             catch (FlurlHttpException ex)
             {
                 var error = await ex.GetResponseStringAsync();
-                throw;
+                _messages.Add(new ServiceMessage(MessageType.Error, MessageId.InternalError));
+                _exception = ex;
             }
             catch (Exception ex)
             {
-                throw;
+                _exception = ex;
+                _messages.Add(new ServiceMessage(MessageType.Error, MessageId.InternalError));
             }
-
+            return new ServiceResult<ResponseDTO<List<UserDto>>>(false, null, _messages,_exception);
             
         }
         
-        public async Task<ServiceResult<Tuple<DataTable,DataSet, Pagination>>> LoadPage(int page)
+        public async Task<ServiceResult<Tuple<DataTable,DataSet, Pagination>>> LoadPage(int page,string name="")
         {
             
             
@@ -71,8 +73,8 @@ namespace UPS.Homework.Service
             var _dataSet = new DataSet();
             try
             {
-                var result = await GetUsers("", page);
-                if (result.code == 200)
+                var result = await GetUsers(name, page);
+                if (result.Succeeded)
                 {
                     
                     _datatable = new DataTable();
@@ -87,8 +89,8 @@ namespace UPS.Homework.Service
                     _datatable.Columns.Add("edit", typeof(Bitmap));
                     _datatable.Columns.Add("delete", typeof(Bitmap));
                     
-                    pagination = result.meta.pagination;
-                    foreach (var record in result.data)
+                    pagination = result.Result.meta.pagination;
+                    foreach (var record in result.Result.data)
                     {
                         var arrObj = new object[]
                         {

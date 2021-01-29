@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UPS.Homework.CrossCutting;
 using UPS.Homework.DTO;
 using UPS.Homework.Service;
 
@@ -41,14 +42,15 @@ namespace UPS.HomeWork.Presenetation
 
         }
 
-        public  async Task SetData(int page)
+        public  async Task SetData(int page,string name="")
         {
            
 
-            var serviceResult = await _userService.LoadPage(page);
+            var serviceResult = await _userService.LoadPage(page,name);
             if (serviceResult.Succeeded)
             {
                 noTotalRecords.Text = serviceResult.Result.Item3.total.ToString();
+                _totalPages = serviceResult.Result.Item3.pages;
                 lblTotalPage.Text = serviceResult.Result.Item3.pages.ToString();
                 txtCurrentPage.Text = serviceResult.Result.Item3.page.ToString();
                 bindingSource1.DataMember = serviceResult.Result.Item1.TableName;
@@ -90,6 +92,7 @@ namespace UPS.HomeWork.Presenetation
             UsersDataGridView.Columns[nameof(UserDto.status)].Visible = false;
             if (flag)
             {
+                //advancedDataGridViewSearchToolBar1.SetColumns(UsersDataGridView.Columns);
                 flag = false;
                 var genderDataGridViewCmb = new DataGridViewComboBoxColumn();
                 genderDataGridViewCmb.Name = GenderColName;
@@ -97,6 +100,7 @@ namespace UPS.HomeWork.Presenetation
                 var statusDataGridViewCmb = new DataGridViewComboBoxColumn();
                 statusDataGridViewCmb.Name = StatusColName;
                 UsersDataGridView.Columns.Add(statusDataGridViewCmb);
+                
             }
             
             UsersDataGridView.Columns[GenderColName].DisplayIndex = UsersDataGridView.Columns[nameof(UserDto.gender)].DisplayIndex;
@@ -118,42 +122,7 @@ namespace UPS.HomeWork.Presenetation
 
         private void advancedDataGridViewSearchToolBar1_Search(object sender, Zuby.ADGV.AdvancedDataGridViewSearchToolBarSearchEventArgs e)
         {
-            bool restartsearch = true;
-            int startColumn = 0;
-            int startRow = 0;
-            if (!e.FromBegin)
-            {
-                bool endcol = UsersDataGridView.CurrentCell.ColumnIndex + 1 >= UsersDataGridView.ColumnCount;
-                bool endrow = UsersDataGridView.CurrentCell.RowIndex + 1 >= UsersDataGridView.RowCount;
-
-                if (endcol && endrow)
-                {
-                    startColumn = UsersDataGridView.CurrentCell.ColumnIndex;
-                    startRow = UsersDataGridView.CurrentCell.RowIndex;
-                }
-                else
-                {
-                    startColumn = endcol ? 0 : UsersDataGridView.CurrentCell.ColumnIndex + 1;
-                    startRow = UsersDataGridView.CurrentCell.RowIndex + (endcol ? 1 : 0);
-                }
-            }
-            DataGridViewCell c = UsersDataGridView.FindCell(
-                e.ValueToSearch,
-                e.ColumnToSearch != null ? e.ColumnToSearch.Name : null,
-                startRow,
-                startColumn,
-                e.WholeWord,
-                e.CaseSensitive);
-            if (c == null && restartsearch)
-                c = UsersDataGridView.FindCell(
-                    e.ValueToSearch,
-                    e.ColumnToSearch != null ? e.ColumnToSearch.Name : null,
-                    0,
-                    0,
-                    e.WholeWord,
-                    e.CaseSensitive);
-            if (c != null)
-                UsersDataGridView.CurrentCell = c;
+           
         }
 
         private async void btnNextPage_Click(object sender, EventArgs e)
@@ -162,7 +131,7 @@ namespace UPS.HomeWork.Presenetation
             if (_currentPage < _totalPages)
             {
                 _currentPage++;
-                await SetData(_currentPage);
+                await SetData(_currentPage,txtSearch.Text);
             }
 
             Cursor = Cursors.Default;
@@ -174,7 +143,7 @@ namespace UPS.HomeWork.Presenetation
             if (_currentPage > 1)
             {
                 _currentPage--;
-                await SetData(_currentPage);
+                await SetData(_currentPage,txtSearch.Text);
             }
 
             Cursor = Cursors.Default;
@@ -212,7 +181,7 @@ namespace UPS.HomeWork.Presenetation
                     _currentPage = _totalPages;
                     page = _totalPages;
                 }
-                await SetData(page);
+                await SetData(page,txtSearch.Text);
             }
         }
 
@@ -236,7 +205,7 @@ namespace UPS.HomeWork.Presenetation
                         var serviceResult = await _userService.DeleteUser(id);
                         if (serviceResult.Succeeded)
                         {
-                            await SetData(_currentPage);
+                            await SetData(_currentPage,txtSearch.Text);
                         }
 
                     }
@@ -266,7 +235,7 @@ namespace UPS.HomeWork.Presenetation
                         var serviceResult = await _userService.UpdateUser(userDto);
                         if (serviceResult.Succeeded)
                         {
-                            await SetData(_currentPage);
+                            await SetData(_currentPage,txtSearch.Text);
                         }
 
                     }
@@ -280,7 +249,7 @@ namespace UPS.HomeWork.Presenetation
             Cursor = Cursors.WaitCursor;
 
             _currentPage = _totalPages;
-            await SetData(_currentPage);
+            await SetData(_currentPage,txtSearch.Text);
 
 
             Cursor = Cursors.Default;
@@ -291,7 +260,7 @@ namespace UPS.HomeWork.Presenetation
             Cursor = Cursors.WaitCursor;
 
             _currentPage = 1;
-            await SetData(_currentPage);
+            await SetData(_currentPage,txtSearch.Text);
             Cursor = Cursors.Default;
         }
 
@@ -299,6 +268,26 @@ namespace UPS.HomeWork.Presenetation
         {
             var AddForm = new AddUserForm(this);
             AddForm.Show();
+        }
+
+        private async void btnExport_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "Xlsx files|*.xlsx";
+            var dialogResult = saveFileDialog1.ShowDialog();
+            if (saveFileDialog1.FileName != "")
+            {
+                var serviceResult = await _userService.GetUsers(txtSearch.Text,_currentPage);
+                if(serviceResult.Succeeded)
+                    Export.ExcelExport(serviceResult.Result.data, saveFileDialog1.FileName);
+            }
+            
+        }
+
+        private async void btnSearch_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            await SetData(1, txtSearch.Text);
+            Cursor = Cursors.Default;
         }
     }
 }

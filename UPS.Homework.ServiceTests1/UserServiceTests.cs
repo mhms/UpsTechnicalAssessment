@@ -34,15 +34,15 @@ namespace UPS.Homework.Service.Tests
         public async Task GetUsersTest()
         {
             var result = await _userService.GetUsers();
-            Assert.AreEqual(result.code, 200);
-            Assert.IsTrue(result.data.Count > 0);
+            Assert.AreEqual(result.Result.code, 200);
+            Assert.IsTrue(result.Result.data.Count > 0);
         }
         [Test()]
         public async Task GetUsersPage1Test()
         {
             var result = await _userService.GetUsers("", 5);
-            Assert.AreEqual(result.code, 200);
-            Assert.IsTrue(result.data.Count > 0);
+            Assert.AreEqual(result.Result.code, 200);
+            Assert.IsTrue(result.Result.data.Count > 0);
         }
 
         [Test()]
